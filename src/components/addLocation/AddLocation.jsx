@@ -11,35 +11,30 @@ function AddLocation(props) {
     const [searchLoading, setSearchLoading] = useState(false)
     const [searchResult, setSearchResult] = useState([])
 
-    function getApi(city) {
+    async function getApi(city) {
         setLoading(true);
-        fetch(`https://api.pexels.com/v1/search?query=${city.split(',')[0]}&per_page=1`, {
-            headers: {
-                Authorization: 'Nkc7Mom1PPnJBnr6TNrtfNYZUBs3JE6jlnXOnIHILPWEY0aok1AbRVd2'
-            }
-        })
-            .then(res => res.json())
-            .then(img => {
-                fetch(`https://api.weatherapi.com/v1/forecast.json?key=e3ea5926f9074031a78195423230312&q=${city}&days=3&lang=en`)
-                    .then((res) => {
-                        if (res.ok) {
-                            res.json().then(res => {
-                                setAlert(<Alert variant="outlined" severity="success">{res.location.name} successfully added</Alert>)
-
-                                props.setState(oldState => {
-                                    return [...oldState, { ...res, type: { home: true, favorite: false }, img: img }]
-                                })
-                            })
-                        } else {
-                            res.json().then(res => { setAlert(<Alert variant="outlined" severity="error">{res.error.message}</Alert>) })
-                        }
-                    })
-                    .finally(() => {
-                        setLoading(false);
-                        setState('');
-                        setTimeout(() => { setAlert() }, 3000)
-                    })
+        await Promise.all([
+            fetch(`https://api.pexels.com/v1/search?query=${city.split(',')[0]}&per_page=1`, {
+                headers: {
+                    Authorization: 'Nkc7Mom1PPnJBnr6TNrtfNYZUBs3JE6jlnXOnIHILPWEY0aok1AbRVd2'
+                }
             })
+                .then(res => res.json()),
+            fetch(`https://api.weatherapi.com/v1/forecast.json?key=e3ea5926f9074031a78195423230312&q=${city}&days=3&lang=en`)
+                .then(res => res.json())
+        ])
+            .then(res => {
+                setAlert(<Alert variant="outlined" severity="success">{res[1].location.name} successfully added</Alert>)
+                props.setState(oldState => [...oldState, { ...res[1], type: { home: true, favorite: false }, img: res[0] }])
+            })
+            .catch((error) => {
+                setAlert(<Alert variant="outlined" severity="error">Error: {error.message}</Alert>)
+            })
+            .finally(() => {
+                setLoading(false);
+                setState('');
+                setTimeout(() => { setAlert() }, 3000)
+            });
     }
 
     async function getSearch(input) {
@@ -51,10 +46,6 @@ function AddLocation(props) {
                     setSearchLoading(false);
                 }))
         }
-    }
-
-    function handleInput(event) {
-        getSearch(event.target.value)
     }
 
     return (
@@ -69,7 +60,7 @@ function AddLocation(props) {
                     options={searchResult.map((item) => {
                         return `${item.name}, ${item.region}, ${item.country}`
                     })}
-                    onInput={handleInput}
+                    onInput={event => getSearch(event.target.value)}
                     sx={{ width: 200 }}
                     renderInput={(params) => <TextField value={state} onInput={event => setState(event.target.value)} {...params} label="Enter location"
                         InputProps={{
