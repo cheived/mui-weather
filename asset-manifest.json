@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/mui-weather/static/css/main.80e651e3.css",
-    "main.js": "/mui-weather/static/js/main.1d269b5c.js",
+    "main.js": "/mui-weather/static/js/main.2e319d44.js",
     "static/js/592.005f84c4.chunk.js": "/mui-weather/static/js/592.005f84c4.chunk.js",
     "static/media/imageNotFound.jpg": "/mui-weather/static/media/imageNotFound.3717584c8c962ee91b9d.jpg",
     "static/media/roboto-latin-500-normal.woff2": "/mui-weather/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
@@ -62,11 +62,11 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/mui-weather/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/mui-weather/index.html",
     "main.80e651e3.css.map": "/mui-weather/static/css/main.80e651e3.css.map",
-    "main.1d269b5c.js.map": "/mui-weather/static/js/main.1d269b5c.js.map",
+    "main.2e319d44.js.map": "/mui-weather/static/js/main.2e319d44.js.map",
     "592.005f84c4.chunk.js.map": "/mui-weather/static/js/592.005f84c4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.80e651e3.css",
-    "static/js/main.1d269b5c.js"
+    "static/js/main.2e319d44.js"
   ]
 }
